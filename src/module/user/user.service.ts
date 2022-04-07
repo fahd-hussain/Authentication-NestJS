@@ -26,17 +26,13 @@ export class UserService {
 
   async getUserById({ id }: { id: string }) {
     try {
-      const users = await this.userRepository.find();
+      const user = await this.userRepository.getUserById({ id });
 
-      if (!users) {
-        return 'users not found';
+      if (!user) {
+        return 'user not found';
       }
 
-      const response = Promise.all(
-        users.map((user) => user.toResponseObject(false)),
-      );
-
-      return response;
+      return user.toResponseObject(false);
     } catch (error) {
       throw error;
     }

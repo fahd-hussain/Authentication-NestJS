@@ -4,11 +4,12 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 require('dotenv').config();
 
 const PORT = process.env.PORT;
+const API_VERSION = 'v1';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.setGlobalPrefix('api/v1');
+  app.setGlobalPrefix(`api/${API_VERSION}`);
 
   const options = new DocumentBuilder()
     .setTitle('Authentication')

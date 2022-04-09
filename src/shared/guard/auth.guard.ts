@@ -24,6 +24,7 @@ export class AuthGuard implements CanActivate {
       return true;
     }
   }
+
   async validateToken(auth: string) {
     const tokenSplit = auth.split(' ');
     if (tokenSplit[0] !== 'Bearer') {
@@ -33,7 +34,19 @@ export class AuthGuard implements CanActivate {
     const token = tokenSplit[1];
 
     try {
-      const decoded: any = await jwt.verify(token, env.JWT_SECRET);
+      const decoded: any = jwt.verify(token, env.JWT_SECRET);
+
+      if (!decoded) {
+        throw new Error('Invalid token');
+      }
+
+      if (!decoded.verified) {
+        throw new Error('User not verified');
+      }
+
+      if (decoded.exp <= Date.now() / 1000) {
+        throw new Error('Token expired');
+      }
 
       return decoded;
     } catch (err) {

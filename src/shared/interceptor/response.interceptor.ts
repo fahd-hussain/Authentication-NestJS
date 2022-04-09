@@ -24,10 +24,7 @@ export class ResponseInterceptor implements NestInterceptor {
 
     return next.handle().pipe(
       map((data) => {
-        Logger.log(
-          `${request.method} ${request.url}`,
-          'ResponseInterceptor',
-        );
+        Logger.log(`${request.method} ${request.url}`, 'ResponseInterceptor');
 
         return { ...sendResponse, data };
       }),
